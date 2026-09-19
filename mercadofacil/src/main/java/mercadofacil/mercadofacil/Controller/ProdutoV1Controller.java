@@ -2,8 +2,7 @@ package mercadofacil.mercadofacil.Controller;
 
 import jakarta.validation.Valid;
 import mercadofacil.mercadofacil.Dto.ProdutoPostDto;
-import mercadofacil.mercadofacil.Service.ProdutoBuscaTodosService;
-import mercadofacil.mercadofacil.Service.ProdutoCriarService;
+import mercadofacil.mercadofacil.Service.ProdutoCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,23 +14,20 @@ import org.springframework.web.bind.annotation.*;
 public class ProdutoV1Controller {
 
     @Autowired
-    ProdutoCriarService produtoCriarService;
-
-    @Autowired
-    ProdutoBuscaTodosService produtoBuscaTodosService;
+    ProdutoCrudService produtoCrudService;
 
     @PostMapping("")
     public ResponseEntity<?> criarProduto(
             @RequestBody @Valid ProdutoPostDto produtoPostDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(produtoCriarService.criarProduto(produtoPostDto));
+                .body(produtoCrudService.criarProduto(produtoPostDto));
     }
 
     @GetMapping("")
-    public  ResponseEntity<?> buscarTodosProdutos() {
+    public ResponseEntity<?> buscarTodosProdutos() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(produtoBuscaTodosService.buscaTodosProdutos());
+                .body(produtoCrudService.buscarTodosProdutos());
     }
 }

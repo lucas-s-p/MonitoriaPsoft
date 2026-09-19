@@ -1,0 +1,103 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #fff;
+  color: #222;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+h1 { margin: 0; font-size: 20px; }
+
+.btn-mais {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn-mais:hover { background: #1d4ed8; }
+
+main { max-width: 720px; margin: 24px auto; padding: 0 16px; }
+
+.mensagem {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 0 0 16px;
+  white-space: pre-line;
+}
+.mensagem.sucesso { background: #dcfce7; color: #166534; }
+.mensagem.erro { background: #fee2e2; color: #991b1b; }
+
+.lista { list-style: none; padding: 0; margin: 0; }
+
+.lista li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.info { display: flex; flex-direction: column; gap: 2px; }
+.info strong { font-size: 16px; }
+.info small { color: #666; }
+
+.botoes { display: flex; gap: 8px; }
+
+button { font: inherit; cursor: pointer; }
+
+.btn-editar, .btn-remover, .btn-primario, .btn-secundario {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+.btn-editar { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+.btn-remover { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+.btn-primario { background: #2563eb; color: #fff; }
+.btn-secundario { background: #f3f4f6; color: #222; border-color: #d1d5db; }
+
+.vazio { color: #888; text-align: center; margin-top: 48px; }
+
+dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 24px;
+  width: 360px;
+  max-width: 90vw;
+}
+dialog::backdrop { background: rgba(0, 0, 0, 0.4); }
+
+dialog h2 { margin: 0 0 16px; font-size: 18px; }
+
+dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+dialog input {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.acoes { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
