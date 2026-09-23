@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoPostDto {
+public class ProdutoPostPutDto {
     @JsonProperty("nomeProduto")
     @NotBlank(message = "Nome do produto não pode ser vazio")
     private String nomeProduto;

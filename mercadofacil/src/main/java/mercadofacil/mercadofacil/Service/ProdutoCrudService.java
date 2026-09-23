@@ -1,12 +1,12 @@
 package mercadofacil.mercadofacil.Service;
 
-import mercadofacil.mercadofacil.Dto.ProdutoPostDto;
-import mercadofacil.mercadofacil.Model.Produto;
+import mercadofacil.mercadofacil.Dto.ProdutoPostPutDto;
+import mercadofacil.mercadofacil.Dto.ProdutoResponseDto;
 
 import java.util.List;
 
 public interface ProdutoCrudService {
-    ProdutoPostDto criarProduto(ProdutoPostDto produtoPostDto);
+    ProdutoResponseDto criarProduto(ProdutoPostPutDto produtoPostPutDto);
 
-    List<Produto> buscarTodosProdutos();
+    List<ProdutoResponseDto> buscarTodosProdutos();
 }

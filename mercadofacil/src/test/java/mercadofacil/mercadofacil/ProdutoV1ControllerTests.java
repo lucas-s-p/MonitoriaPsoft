@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.transaction.Transactional;
-import mercadofacil.mercadofacil.Dto.ProdutoPostDto;
+import mercadofacil.mercadofacil.Dto.ProdutoPostPutDto;
+import mercadofacil.mercadofacil.Dto.ProdutoResponseDto;
 import mercadofacil.mercadofacil.Model.Produto;
 import mercadofacil.mercadofacil.Repository.ProdutoRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -51,7 +52,7 @@ public class ProdutoV1ControllerTests {
     @Test
     @DisplayName("Teste para criação de um produto")
     void testQuandoCriamosUmProduto()  throws Exception{
-        ProdutoPostDto produtoPostDto = ProdutoPostDto.builder()
+        ProdutoPostPutDto produtoPostPutDto = ProdutoPostPutDto.builder()
                 .nomeProduto("Pipoca")
                 .valorProduto(21.00)
                 .codigoBarras("8302184870420")
@@ -60,12 +61,12 @@ public class ProdutoV1ControllerTests {
 
         String responseJSONString = driver.perform(post(URI_PRODUTO)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(produtoPostDto)))
+                .content(objectMapper.writeValueAsString(produtoPostPutDto)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString();
 
-        Produto resultado = objectMapper.readValue(responseJSONString, Produto.ProdutoBuilder.class).build();
+        ProdutoResponseDto resultado = objectMapper.readValue(responseJSONString, ProdutoResponseDto.class);
         assertEquals(1, produtoRepository.findAll().size());
 
         //System.out.println("Produto adicionado: " + produtoRepository.findById(1L).get());
@@ -96,7 +97,7 @@ public class ProdutoV1ControllerTests {
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString();
 
-        List<Produto> resultado = objectMapper.readValue(responseJSONString, new TypeReference<List<Produto>>(){});
+        List<ProdutoResponseDto> resultado = objectMapper.readValue(responseJSONString, new TypeReference<List<ProdutoResponseDto>>(){});
         assertEquals(2, resultado.size());
 
         //System.out.println("Produtos do meu banco de dados: " + produtoRepository.findAll());
