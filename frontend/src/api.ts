@@ -1,15 +1,25 @@
 // Comunicação com o back-end (API REST) do sistema de cadastro de produtos.
 const API = '/v1/produtos'
+const API_CATEGORIAS = '/v1/categorias'
+
+export interface Categoria {
+  id: number
+  nomeCategoria: string
+}
+
+// Corpo enviado no POST de categoria (mesmo formato do CategoriaPostPutDto do back).
+export type CategoriaInput = Omit<Categoria, 'id'>
 
 export interface Produto {
   id: number
   nomeProduto: string
   valorProduto: number
   codigoBarras: string
+  categoria?: Categoria | null // o back devolve a categoria do produto (ou null)
 }
 
-// Corpo enviado no POST e no PUT (mesmo formato do ProdutoPostDto do back).
-export type ProdutoInput = Omit<Produto, 'id'>
+// idCategoria = null quando o produto fica sem categoria.
+export type ProdutoInput = Omit<Produto, 'id' | 'categoria'> & { idCategoria: number | null }
 
 // Lançar erro
 export class ApiError extends Error {
@@ -40,8 +50,10 @@ async function tratarResposta<T>(resposta: Response): Promise<T> {
   throw new ApiError(resposta.status, rota, detalhe)
 }
 
-export function listarProdutos(): Promise<Produto[]> {
-  return fetch(API).then((r) => tratarResposta<Produto[]>(r))
+// GET /v1/produtos?categoria=Bebidas
+export function listarProdutos(categoria?: string): Promise<Produto[]> {
+  const url = categoria ? `${API}?categoria=${encodeURIComponent(categoria)}` : API
+  return fetch(url).then((r) => tratarResposta<Produto[]>(r))
 }
 
 export function criarProduto(dados: ProdutoInput): Promise<Produto> {
@@ -64,4 +76,18 @@ export function editarProduto(id: number, dados: ProdutoInput): Promise<Produto>
 // DELETE /v1/produtos/{id} — rota a ser implementada no back-end
 export function removerProduto(id: number): Promise<void> {
   return fetch(`${API}/${id}`, { method: 'DELETE' }).then((r) => tratarResposta<void>(r))
+}
+
+// GET /v1/categorias — rota a ser implementada no back-end
+export function listarCategorias(): Promise<Categoria[]> {
+  return fetch(API_CATEGORIAS).then((r) => tratarResposta<Categoria[]>(r))
+}
+
+// POST /v1/categorias — rota a ser implementada no back-end
+export function criarCategoria(dados: CategoriaInput): Promise<Categoria> {
+  return fetch(API_CATEGORIAS, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dados),
+  }).then((r) => tratarResposta<Categoria>(r))
 }

@@ -19,7 +19,8 @@ export default function ListaProdutos({ produtos, onEditar, onRemover }: Props) 
             <strong>{produto.nomeProduto}</strong>
             <span>R$ {Number(produto.valorProduto).toFixed(2)}</span>
             <small>
-              Código: {produto.codigoBarras} · id: {produto.id}
+              Código: {produto.codigoBarras} · id: {produto.id} · Categoria:{' '}
+              {produto.categoria?.nomeCategoria ?? 'sem categoria'}
             </small>
           </div>
           <div className="botoes">

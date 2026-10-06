@@ -1,17 +1,21 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import type { Produto, ProdutoInput } from '../api'
+import type { Categoria, Produto, ProdutoInput } from '../api'
 
 interface Props {
   produto?: Produto // undefined = criando um novo
+  categorias: Categoria[]
   onSalvar: (dados: ProdutoInput) => void
   onCancelar: () => void
 }
 
-export default function ProdutoModal({ produto, onSalvar, onCancelar }: Props) {
+export default function ProdutoModal({ produto, categorias, onSalvar, onCancelar }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [nomeProduto, setNomeProduto] = useState(produto?.nomeProduto ?? '')
   const [valorProduto, setValorProduto] = useState(produto ? String(produto.valorProduto) : '')
   const [codigoBarras, setCodigoBarras] = useState(produto?.codigoBarras ?? '')
+  const [idCategoria, setIdCategoria] = useState(
+    produto?.categoria ? String(produto.categoria.id) : ''
+  )
 
   useEffect(() => {
     dialogRef.current?.showModal()
@@ -23,6 +27,7 @@ export default function ProdutoModal({ produto, onSalvar, onCancelar }: Props) {
       nomeProduto: nomeProduto.trim(),
       valorProduto: Number(valorProduto),
       codigoBarras: codigoBarras.trim(),
+      idCategoria: idCategoria ? Number(idCategoria) : null,
     })
   }
 
@@ -58,6 +63,17 @@ export default function ProdutoModal({ produto, onSalvar, onCancelar }: Props) {
             value={codigoBarras}
             onChange={(e) => setCodigoBarras(e.target.value)}
           />
+        </label>
+        <label>
+          Categoria
+          <select value={idCategoria} onChange={(e) => setIdCategoria(e.target.value)}>
+            <option value="">Sem categoria</option>
+            {categorias.map((categoria) => (
+              <option key={categoria.id} value={categoria.id}>
+                {categoria.nomeCategoria}
+              </option>
+            ))}
+          </select>
         </label>
         <div className="acoes">
           <button type="button" className="btn-secundario" onClick={onCancelar}>

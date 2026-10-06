@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import * as api from '../api'
-import type { Produto, ProdutoInput } from '../api'
+import type { Categoria, CategoriaInput, Produto, ProdutoInput } from '../api'
 
 export interface Mensagem {
   tipo: 'sucesso' | 'erro'
@@ -21,30 +21,44 @@ function mensagemDeErro(erro: unknown, acao: string): string {
   return 'Não foi possível conectar ao back-end. O Spring Boot está rodando na porta 8080?'
 }
 
-// Hook que concentra o estado e as ações do CRUD de produtos.
+// Hook que concentra o estado e as ações de produtos e categorias.
 export function useProdutos() {
   const [produtos, setProdutos] = useState<Produto[]>([])
+  const [categorias, setCategorias] = useState<Categoria[]>([])
+  const [filtro, setFiltro] = useState('') // nome da categoria; '' = todas
   const [mensagem, setMensagem] = useState<Mensagem | null>(null)
 
-  const carregar = useCallback(async () => {
+  const carregarProdutos = useCallback(async () => {
     try {
-      setProdutos(await api.listarProdutos())
+      setProdutos(await api.listarProdutos(filtro || undefined))
     } catch (erro) {
       setMensagem({ tipo: 'erro', texto: mensagemDeErro(erro, 'listar produtos') })
+    }
+  }, [filtro])
+
+  const carregarCategorias = useCallback(async () => {
+    try {
+      setCategorias(await api.listarCategorias())
+    } catch (erro) {
+      setMensagem({ tipo: 'erro', texto: mensagemDeErro(erro, 'listar categorias') })
     }
   }, [])
 
   useEffect(() => {
-    carregar()
-  }, [carregar])
+    carregarProdutos()
+  }, [carregarProdutos])
 
-  // Executa uma ação da API, mostra a mensagem de sucesso/erro e recarrega a lista.
+  useEffect(() => {
+    carregarCategorias()
+  }, [carregarCategorias])
+
+  // Executa uma ação da API, mostra a mensagem de sucesso/erro e recarrega as listas.
   async function executar(acao: string, sucesso: string, fn: () => Promise<unknown>) {
     setMensagem(null)
     try {
       await fn()
       setMensagem({ tipo: 'sucesso', texto: sucesso })
-      await carregar()
+      await Promise.all([carregarProdutos(), carregarCategorias()])
     } catch (erro) {
       setMensagem({ tipo: 'erro', texto: mensagemDeErro(erro, acao) })
     }
@@ -63,5 +77,8 @@ export function useProdutos() {
     )
   }
 
-  return { produtos, mensagem, criar, editar, remover }
+  const criarCategoria = (dados: CategoriaInput) =>
+    executar('criar categoria', 'Categoria criada com sucesso!', () => api.criarCategoria(dados))
+
+  return { produtos, categorias, filtro, setFiltro, mensagem, criar, editar, remover, criarCategoria }
 }
