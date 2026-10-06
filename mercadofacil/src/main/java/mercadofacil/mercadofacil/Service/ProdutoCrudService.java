@@ -6,7 +6,10 @@ import mercadofacil.mercadofacil.Dto.ProdutoResponseDto;
 import java.util.List;
 
 public interface ProdutoCrudService {
+
     ProdutoResponseDto criarProduto(ProdutoPostPutDto produtoPostPutDto);
 
     List<ProdutoResponseDto> buscarTodosProdutos();
+
+    List<ProdutoResponseDto> buscarProdutosPorCategoria(String nomeCategoria);
 }

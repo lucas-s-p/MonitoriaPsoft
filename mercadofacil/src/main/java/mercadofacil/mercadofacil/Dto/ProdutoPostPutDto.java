@@ -22,4 +22,7 @@ public class ProdutoPostPutDto {
     @JsonProperty("codigoBarras")
     @NotBlank(message = "Código de Barras do produto não pode ser vazio")
     private String codigoBarras;
+    // Opcional: null = produto sem categoria
+    @JsonProperty("idCategoria")
+    private Long idCategoria;
 }

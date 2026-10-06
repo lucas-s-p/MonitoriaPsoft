@@ -27,12 +27,16 @@ public class ProdutoV1Controller {
                 .body(produtoCrudService.criarProduto(produtoPostPutDto));
     }
 
+    // GET /v1/produtos            -> todos os produtos
+    // GET /v1/produtos?categoria=Bebidas -> só os da categoria
     @GetMapping("")
-    public ResponseEntity<List<ProdutoResponseDto>> buscarTodosProdutos() {
+    public ResponseEntity<List<ProdutoResponseDto>> buscarTodosProdutos(
+            @RequestParam(required = false) String categoria) {
+        List<ProdutoResponseDto> produtos = (categoria == null || categoria.isBlank())
+                ? produtoCrudService.buscarTodosProdutos()
+                : produtoCrudService.buscarProdutosPorCategoria(categoria);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(produtoCrudService.buscarTodosProdutos());
+                .body(produtos);
     }
-
-
 }

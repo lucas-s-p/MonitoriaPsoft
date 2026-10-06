@@ -13,10 +13,17 @@ import lombok.NoArgsConstructor;
 public class ProdutoResponseDto {
     @JsonProperty("id")
     private Long id;
+
     @JsonProperty("nomeProduto")
     private String nomeProduto;
+
     @JsonProperty("valorProduto")
     private Double valorProduto;
+
     @JsonProperty("codigoBarras")
     private String codigoBarras;
+
+    // null quando o produto não tem categoria
+    @JsonProperty("categoria")
+    private CategoriaResponseDto categoria;
 }

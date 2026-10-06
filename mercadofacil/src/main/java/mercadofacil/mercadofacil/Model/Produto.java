@@ -29,4 +29,6 @@ public class Produto {
     @Column(name = "ds_codigoBarrras", nullable = false)
     @JsonProperty("codigoBarras")
     private String codigoBarras;
+
+    // Adicione a relação aqui
 }
